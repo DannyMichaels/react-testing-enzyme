@@ -7,6 +7,10 @@ function App() {
     setCount((prevState) => prevState + 1);
   }, [setCount]);
 
+  const decrement = useCallback(() => {
+    setCount((prevState) => prevState - 1);
+  }, [setCount]);
+
   return (
     <div data-test="component-app">
       <h1 data-test="counter-display">
@@ -15,6 +19,10 @@ function App() {
       </h1>
       <button data-test="increment-button" onClick={increment}>
         Increment Counter
+      </button>
+
+      <button data-test="decrement-button" onClick={decrement}>
+        Decrement Counter
       </button>
     </div>
   );

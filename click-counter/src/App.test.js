@@ -46,7 +46,7 @@ describe('<App/>', () => {
     expect(count).toBe('0');
   });
 
-  test('clicking button increments counter display', () => {
+  test('clicking increment button increments counter display', () => {
     const wrapper = setup();
 
     // find button
@@ -58,5 +58,16 @@ describe('<App/>', () => {
     // find the display, and test that the number has been incremented
     const count = findByTestAttr(wrapper, 'count').text();
     expect(count).toBe('1');
+  });
+
+  test('clicking decrement button decrements counter display', () => {
+    // the order if when we find things actually matters
+    const wrapper = setup();
+    const button = findByTestAttr(wrapper, 'decrement-button');
+
+    button.simulate('click');
+
+    const count = findByTestAttr(wrapper, 'count').text();
+    expect(count).toBe('-1');
   });
 });
