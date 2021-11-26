@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import './App.css';
 
 function App() {
@@ -6,8 +6,13 @@ function App() {
   const [error, setError] = useState('');
 
   const increment = useCallback(() => {
+    // clear error if exists
+    if (error !== '') {
+      setError('');
+    }
+
     setCount((prevState) => prevState + 1);
-  }, [setCount]);
+  }, [setCount, error]);
 
   const decrement = useCallback(() => {
     if (count === 0) {
@@ -18,19 +23,19 @@ function App() {
     setCount((prevState) => prevState - 1);
   }, [count, setCount]);
 
-  useEffect(() => {
-    // clear the error msg
-    if (count !== 0 && error !== '') {
-      setError('');
-    }
-  }, [count, error]);
-
   return (
     <div data-test="component-app">
       <h1 data-test="counter-display">
         The counter is currently&nbsp;
         <span data-test="count">{count}</span>
       </h1>
+      {error !== '' && (
+        <div
+          style={{ color: 'red', fontSize: '1.5rem', padding: '10px' }}
+          data-test="error-message">
+          {error}
+        </div>
+      )}
       <button data-test="increment-button" onClick={increment}>
         Increment Counter
       </button>
@@ -38,8 +43,6 @@ function App() {
       <button data-test="decrement-button" onClick={decrement}>
         Decrement Counter
       </button>
-
-      {error && <div data-test="error">{error}</div>}
     </div>
   );
 }

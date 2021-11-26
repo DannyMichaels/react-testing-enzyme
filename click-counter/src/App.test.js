@@ -60,35 +60,74 @@ describe('<App/>', () => {
     expect(count).toBe('1');
   });
 
-  describe('decrement-button', () => {
-    test('clicking it when counter is 0 will not decrement and will throw an error', () => {
+  describe('decrement button', () => {
+    test('renders decrement button', () => {
       const wrapper = setup();
-
-      const decrementBtn = findByTestAttr(wrapper, 'decrement-button');
-      decrementBtn.simulate('click');
-
-      const count = findByTestAttr(wrapper, 'count').text();
-      expect(count).toBe('0');
-
-      const error = findByTestAttr(wrapper, 'error').text();
-      expect(error).toBe("counter can't go below zero!");
+      const button = findByTestAttr(wrapper, 'decrement-button');
+      expect(button.length).toBe(1);
     });
 
-    test('clicking it when counter is above 0 decrements counter display', () => {
-      // the order if when we find things actually matters
-
+    test('clicking decrement button decrements counter display when state is greater than 0', () => {
       const wrapper = setup();
-      const incrementBtn = findByTestAttr(wrapper, 'increment-button');
 
+      // click the increment button so that the counter is greater than 0
+      const incrementBtn = findByTestAttr(wrapper, 'increment-button');
       incrementBtn.simulate('click');
+
       const incrementedCount = findByTestAttr(wrapper, 'count').text();
       expect(incrementedCount).toBe('1');
 
-      const decrementBtn = findByTestAttr(wrapper, 'decrement-button');
-      decrementBtn.simulate('click');
+      // find decrement button and click
+      const decButton = findByTestAttr(wrapper, 'decrement-button');
+      decButton.simulate('click');
 
+      // find display and test value
       const decrementedCount = findByTestAttr(wrapper, 'count').text();
       expect(decrementedCount).toBe('0');
+    });
+  });
+
+  describe('error when counter goes below 0', () => {
+    test('error does not show when not needed', () => {
+      const wrapper = setup();
+      const errorDiv = findByTestAttr(wrapper, 'error-message');
+
+      expect(errorDiv.length).toBe(0);
+    });
+
+    describe('counter is 0 and decrement is clicked', () => {
+      let wrapper;
+      beforeEach(() => {
+        // no need to set counter value here; default value of 0 is good
+        wrapper = setup();
+
+        // find button and click
+        const button = findByTestAttr(wrapper, 'decrement-button');
+        button.simulate('click');
+      });
+
+      test('error shows', () => {
+        const errorDiv = findByTestAttr(wrapper, 'error-message');
+        expect(errorDiv.length).toBe(1);
+        expect(errorDiv.text()).toBe("counter can't go below zero!");
+      });
+
+      test('counter still displays 0 because decrement was clicked when counter was 0', () => {
+        const count = findByTestAttr(wrapper, 'count').text();
+        expect(count).toBe('0');
+      });
+
+      test('clicking increment clears the error', () => {
+        const beforeIncrementError = findByTestAttr(wrapper, 'error-message');
+        expect(beforeIncrementError.length).toBe(1);
+
+        // find and click the increment button
+        const incrementBtn = findByTestAttr(wrapper, 'increment-button');
+        incrementBtn.simulate('click');
+
+        const afterIncrementError = findByTestAttr(wrapper, 'error-message');
+        expect(afterIncrementError.length).toBe(0);
+      });
     });
   });
 });
