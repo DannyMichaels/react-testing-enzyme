@@ -1,15 +1,29 @@
+import { useState, useCallback, useEffect } from 'react';
 import './App.css';
-import { useState, useCallback } from 'react';
+
 function App() {
   const [count, setCount] = useState(0);
+  const [error, setError] = useState('');
 
   const increment = useCallback(() => {
     setCount((prevState) => prevState + 1);
   }, [setCount]);
 
   const decrement = useCallback(() => {
+    if (count === 0) {
+      setError("counter can't go below zero!");
+      return;
+    }
+
     setCount((prevState) => prevState - 1);
-  }, [setCount]);
+  }, [count, setCount]);
+
+  useEffect(() => {
+    // clear the error msg
+    if (count !== 0 && error !== '') {
+      setError('');
+    }
+  }, [count, error]);
 
   return (
     <div data-test="component-app">
@@ -24,6 +38,8 @@ function App() {
       <button data-test="decrement-button" onClick={decrement}>
         Decrement Counter
       </button>
+
+      {error && <div data-test="error">{error}</div>}
     </div>
   );
 }

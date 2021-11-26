@@ -60,14 +60,35 @@ describe('<App/>', () => {
     expect(count).toBe('1');
   });
 
-  test('clicking decrement button decrements counter display', () => {
-    // the order if when we find things actually matters
-    const wrapper = setup();
-    const button = findByTestAttr(wrapper, 'decrement-button');
+  describe('decrement-button', () => {
+    test('clicking it when counter is 0 will not decrement and will throw an error', () => {
+      const wrapper = setup();
 
-    button.simulate('click');
+      const decrementBtn = findByTestAttr(wrapper, 'decrement-button');
+      decrementBtn.simulate('click');
 
-    const count = findByTestAttr(wrapper, 'count').text();
-    expect(count).toBe('-1');
+      const count = findByTestAttr(wrapper, 'count').text();
+      expect(count).toBe('0');
+
+      const error = findByTestAttr(wrapper, 'error').text();
+      expect(error).toBe("counter can't go below zero!");
+    });
+
+    test('clicking it when counter is above 0 decrements counter display', () => {
+      // the order if when we find things actually matters
+
+      const wrapper = setup();
+      const incrementBtn = findByTestAttr(wrapper, 'increment-button');
+
+      incrementBtn.simulate('click');
+      const incrementedCount = findByTestAttr(wrapper, 'count').text();
+      expect(incrementedCount).toBe('1');
+
+      const decrementBtn = findByTestAttr(wrapper, 'decrement-button');
+      decrementBtn.simulate('click');
+
+      const decrementedCount = findByTestAttr(wrapper, 'count').text();
+      expect(decrementedCount).toBe('0');
+    });
   });
 });
