@@ -26,3 +26,5 @@ and in package.json add this under "babel":
       }
     },
 ```
+
+to run local server make sure to install serve globally `(yarn global add serve)` then run serve -s build
