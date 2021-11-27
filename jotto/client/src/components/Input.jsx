@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 export default function Input({ secretWord }) {
   const [currentGuess, setCurrentGuess] = useState('');
+
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault();
+  }, []);
 
   return (
     <div data-test="component-input">
@@ -14,12 +18,13 @@ export default function Input({ secretWord }) {
               Guess
             </label>
             <input
-              value={currentGuess}
-              onChange={(e) => setCurrentGuess(e.target.value)}
+              data-test="input-field"
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               name="currentGuess"
               type="text"
               placeholder="Guess"
+              value={currentGuess}
+              onChange={(e) => setCurrentGuess(e.target.value)}
             />
           </div>
         </div>
@@ -29,7 +34,8 @@ export default function Input({ secretWord }) {
           <div class="md:w-2/3">
             <button
               data-test="submit-button"
-              class="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+              onClick={handleSubmit}
+              class="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
               type="button">
               Submit
             </button>
