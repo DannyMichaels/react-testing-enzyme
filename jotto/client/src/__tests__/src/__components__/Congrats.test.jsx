@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
 import Congrats from '../../../components/Congrats';
-import { checkProps, findByTestAttr } from '../../../test-utils/testUtils';
+import { checkProps, findByTestAttr } from '../../../test-utils';
 
 const defaultProps = {
   success: false,

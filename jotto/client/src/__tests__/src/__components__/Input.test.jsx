@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { findByTestAttr, checkProps } from '../../../test-utils/testUtils';
+import { findByTestAttr, checkProps } from '../../../test-utils';
 import Input from '../../../components/Input';
 
 /* mock entire module for destructuring useState on import
