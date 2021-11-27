@@ -1,10 +1,14 @@
 import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+
 export default function Input({ secretWord }) {
   const [currentGuess, setCurrentGuess] = useState('');
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
+
+    // clear current guess
+    setCurrentGuess('');
   }, []);
 
   return (
