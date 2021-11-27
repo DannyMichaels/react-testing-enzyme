@@ -17,16 +17,57 @@ jest.mock('react', () => ({
  * @param {object} props - component props specific for this setup
  * @returns {ShallowWrapper}
  */
-const setup = (secretWord = 'party') => {
-  return shallow(<Input secretWord={secretWord} />);
+const setup = (success = false, secretWord = 'party') => {
+  return shallow(<Input success={success} secretWord={secretWord} />);
 };
 
 describe('<Input />', () => {
-  it('renders without error', () => {
-    const wrapper = setup();
+  describe('render', () => {
+    describe('success is true', () => {
+      let wrapper;
+      beforeEach(() => {
+        wrapper = setup(true);
+      });
 
-    const component = findByTestAttr(wrapper, 'component-input');
-    expect(component.length).toBe(1);
+      it('renders without error', () => {
+        const component = findByTestAttr(wrapper, 'component-input');
+        expect(component.length).toBe(1);
+      });
+
+      test('input field does not show', () => {
+        // does not show on success true
+        const inputField = findByTestAttr(wrapper, 'input-field');
+        expect(inputField.exists()).toBe(false);
+      });
+
+      test('submit button does not show', () => {
+        const submitBtn = findByTestAttr(wrapper, 'submit-button');
+        expect(submitBtn.exists()).toBe(false);
+      });
+    });
+
+    describe('success is false', () => {
+      let wrapper;
+      beforeEach(() => {
+        wrapper = setup(false);
+      });
+
+      it('renders without error', () => {
+        const component = findByTestAttr(wrapper, 'component-input');
+        expect(component.length).toBe(1);
+      });
+
+      test('input field shows', () => {
+        // does not show on success true
+        const inputField = findByTestAttr(wrapper, 'input-field');
+        expect(inputField.exists()).toBe(true);
+      });
+
+      test('submit button shows', () => {
+        const submitBtn = findByTestAttr(wrapper, 'submit-button');
+        expect(submitBtn.exists()).toBe(true);
+      });
+    });
   });
 
   it('does not throw warning with expected prop types', () => {

@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
-export default function Input({ secretWord }) {
+export default function Input({ success, secretWord }) {
   const [currentGuess, setCurrentGuess] = useState('');
 
   const handleSubmit = useCallback((e) => {
@@ -10,6 +10,10 @@ export default function Input({ secretWord }) {
 
     setCurrentGuess(''); // clear current guess
   }, []);
+
+  if (success) {
+    return <div data-test="component-input" />;
+  }
 
   return (
     <div data-test="component-input">
