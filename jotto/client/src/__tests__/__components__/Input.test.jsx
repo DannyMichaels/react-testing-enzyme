@@ -34,12 +34,29 @@ describe('<Input />', () => {
   });
 
   describe('state controlled input field', () => {
-    test('state updates with value of input field upon change', () => {
-      // it won't run the actual useState that comes from react, it will be replaced with this function and it returns an array of empty string and  the mock setter
-      const mockSetCurrentGuess = jest.fn(); // setCurrentGuess mock
-      React.useState = () => ['', mockSetCurrentGuess];
+    let mockSetCurrentGuess = jest.fn(); // mock setCurrentGuess
+    let originalUseState; // maintain original useState
+    let wrapper;
 
-      const wrapper = setup();
+    beforeEach(() => {
+      // the order of things matters, mockSetState comes first, then the wrapper
+
+      mockSetCurrentGuess.mockClear(); // clear the mock before each test
+
+      originalUseState = React.useState;
+
+      // it won't run the actual useState that comes from react, it will be replaced with this function and it returns an array of empty string and  the mock setter
+      React.useState = () => ['train', mockSetCurrentGuess];
+
+      wrapper = setup();
+    });
+
+    afterEach(() => {
+      // restore the original useState after each test.
+      React.useState = originalUseState;
+    });
+
+    test('state updates with value of input field upon change', () => {
       const inputField = findByTestAttr(wrapper, 'input-field');
 
       // apply that event to change simulation on the inputField
@@ -50,11 +67,6 @@ describe('<Input />', () => {
     });
 
     test('field is cleared (sets currentGuess to an empty string) upon submit button click', () => {
-      const mockSetCurrentGuess = jest.fn(); // setCurrentGuess mock
-      React.useState = () => ['train', mockSetCurrentGuess];
-
-      const wrapper = setup();
-
       const submitBtn = findByTestAttr(wrapper, 'submit-button');
 
       const mockEvent = {
