@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme';
-import { findByTestAttr, checkProps } from '../../utils/testUtils';
+import { findByTestAttr, checkProps } from '../../test-utils/testUtils';
 import GuessedWords from '../../components/GuessedWords';
 
 const defaultProps = {
