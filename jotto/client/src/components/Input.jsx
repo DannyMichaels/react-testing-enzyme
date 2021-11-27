@@ -56,4 +56,5 @@ export default function Input({ success, secretWord }) {
 
 Input.propTypes = {
   secretWord: PropTypes.string.isRequired,
+  success: PropTypes.bool.isRequired,
 };

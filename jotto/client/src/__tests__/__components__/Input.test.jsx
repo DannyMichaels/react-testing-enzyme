@@ -71,7 +71,7 @@ describe('<Input />', () => {
   });
 
   it('does not throw warning with expected prop types', () => {
-    checkProps(Input, { secretWord: 'Hello' });
+    checkProps(Input, { secretWord: 'Hello', success: false });
   });
 
   describe('state controlled input field', () => {
