@@ -6,9 +6,9 @@ export default function Input({ secretWord }) {
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
+    // TODO: update guessedWords global state, check against secretWord and optionally update success global state
 
-    // clear current guess
-    setCurrentGuess('');
+    setCurrentGuess(''); // clear current guess
   }, []);
 
   return (

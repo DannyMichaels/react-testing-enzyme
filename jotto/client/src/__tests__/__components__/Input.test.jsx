@@ -48,24 +48,21 @@ describe('<Input />', () => {
 
       expect(mockSetCurrentGuess).toHaveBeenCalledWith('train'); // expect the setState to have been ran with the event.target.value
     });
-  });
 
-  describe('submit button', () => {
-    describe('is clicked', () => {
-      it('sets currentGuess to an empty string', () => {
-        const mockSetCurrentGuess = jest.fn(); // setCurrentGuess mock
-        React.useState = () => ['train', mockSetCurrentGuess];
-        const wrapper = setup();
+    test('field is cleared (sets currentGuess to an empty string) upon submit button click', () => {
+      const mockSetCurrentGuess = jest.fn(); // setCurrentGuess mock
+      React.useState = () => ['train', mockSetCurrentGuess];
 
-        const submitBtn = findByTestAttr(wrapper, 'submit-button');
+      const wrapper = setup();
 
-        const mockEvent = {
-          preventDefault: jest.fn(() => {}),
-        };
+      const submitBtn = findByTestAttr(wrapper, 'submit-button');
 
-        submitBtn.simulate('click', mockEvent);
-        expect(mockSetCurrentGuess).toHaveBeenCalledWith(''); // expect the setState to have been ran after the click and set to empty string
-      });
+      const mockEvent = {
+        preventDefault: jest.fn(() => {}),
+      };
+
+      submitBtn.simulate('click', mockEvent);
+      expect(mockSetCurrentGuess).toHaveBeenCalledWith(''); // expect the setState to have been ran after the click and set to empty string
     });
   });
 });
