@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 /**
  * @function
  * @param {object} props - React props
@@ -16,3 +18,7 @@ export default function Congrats({ success }) {
 
   return <div data-test="component-congrats" />;
 }
+
+Congrats.propTypes = {
+  success: PropTypes.bool.isRequired,
+};

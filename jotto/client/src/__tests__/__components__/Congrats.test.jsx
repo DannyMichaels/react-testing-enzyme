@@ -1,9 +1,13 @@
 import Enzyme, { shallow } from 'enzyme';
 import EnzymeAdapter from '@wojtekmaj/enzyme-adapter-react-17';
 import Congrats from '../../components/Congrats';
-import { findByTestAttr } from '../../utils/testUtils';
+import { checkProps, findByTestAttr } from '../../utils/testUtils';
 
 Enzyme.configure({ adapter: new EnzymeAdapter() });
+
+const defaultProps = {
+  success: false,
+};
 
 /**
  * @method setup
@@ -12,7 +16,8 @@ Enzyme.configure({ adapter: new EnzymeAdapter() });
  * @returns {ShallowWrapper}
  */
 const setup = (props = {}) => {
-  return shallow(<Congrats {...props} />);
+  const setupProps = { ...defaultProps, ...props };
+  return shallow(<Congrats {...setupProps} />);
 };
 
 describe('<Congrats />', () => {
@@ -32,5 +37,11 @@ describe('<Congrats />', () => {
     const wrapper = setup({ success: true });
     const message = findByTestAttr(wrapper, 'component-congrats');
     expect(message.text().length).not.toBe(0);
+  });
+
+  // prop types testing: this is not needed with typescript
+  it('does not throw warning with expected prop types', () => {
+    const expectedProps = { success: true };
+    checkProps(Congrats, expectedProps);
   });
 });
