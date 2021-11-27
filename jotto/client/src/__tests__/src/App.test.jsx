@@ -1,6 +1,6 @@
 import { shallow } from 'enzyme';
-import App from '../App';
-import { findByTestAttr } from '../test-utils';
+import App from '../../App';
+import { findByTestAttr } from '../../test-utils';
 
 /**
  * @method setup

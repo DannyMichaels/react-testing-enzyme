@@ -1,6 +1,6 @@
-import App from '../../App';
+import App from '../../../App';
 import { mount } from 'enzyme';
-import { findByTestAttr } from '../../test-utils';
+import { findByTestAttr } from '../../../test-utils';
 
 /**
  *
