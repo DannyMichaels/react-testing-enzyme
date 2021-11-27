@@ -1,8 +1,5 @@
-import React from 'react';
-import { mount } from 'enzyme';
-
 import App from '../../App';
-
+import { mount } from 'enzyme';
 import { findByTestAttr } from '../../test-utils';
 
 /**
@@ -17,8 +14,8 @@ import { findByTestAttr } from '../../test-utils';
  */
 const setup = (state = {}) => {
   // TODO: apply state
-  const wrapper = mount(<App />);
 
+  const wrapper = mount(<App />);
   // add value to input box
   const inputField = findByTestAttr(wrapper, 'input-field');
   inputField.simulate('change', { target: { value: 'train' } });
@@ -31,9 +28,8 @@ const setup = (state = {}) => {
 };
 
 // right thing happens if no words have been guessed.
-describe('no words guessed', () => {
+describe.skip('no words guessed', () => {
   let wrapper;
-
   beforeEach(() => {
     wrapper = setup({
       secretWord: 'party',
@@ -48,19 +44,13 @@ describe('no words guessed', () => {
   });
 });
 
-describe('some words guessed', () => {
+describe.skip('some words guessed', () => {
   let wrapper;
-
-  const mockGuessedWords = [
-    { guessedWord: 'parka', letterMatchCount: 3 },
-    { guessedWord: 'bones', letterMatchCount: 0 },
-  ];
-
   beforeEach(() => {
     wrapper = setup({
       secretWord: 'party',
       success: false,
-      guessedWords: mockGuessedWords,
+      guessedWords: [{ guessedWord: 'agile', letterMatchCount: 1 }],
     });
   });
 
@@ -70,7 +60,7 @@ describe('some words guessed', () => {
   });
 });
 
-describe('guess secret word', () => {
+describe.skip('guess secret word', () => {
   let wrapper;
 
   beforeEach(() => {
@@ -79,16 +69,16 @@ describe('guess secret word', () => {
       success: false,
       guessedWords: [{ guessedWord: 'agile', letterMatchCount: 1 }],
     });
+
+    // add value to inputfield
+    const inputField = findByTestAttr(wrapper, 'input-field');
+    const mockEvent = { target: { value: 'party' } };
+    inputField.simulate('change', mockEvent);
+
+    // simulate click on submit button
+    const submitBtn = findByTestAttr(wrapper, 'submit-button');
+    submitBtn.simulate('click', { preventDefault: () => {} });
   });
-
-  // add value to inputfield
-  const inputField = findByTestAttr(wrapper, 'input-field');
-  const mockEvent = { target: { value: 'party' } };
-  inputField.simulate('change', mockEvent);
-
-  // simulate click on submit button
-  const submitBtn = findByTestAttr(wrapper, 'submit-button');
-  submitBtn.simulate('click', { preventDefault: () => {} });
 
   it('adds row to guessedWords table', () => {
     const guessedWordsNodes = findByTestAttr(wrapper, 'guessed-word');
