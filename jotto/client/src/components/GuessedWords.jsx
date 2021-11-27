@@ -44,7 +44,11 @@ export default function GuessedWords({ guessedWords }) {
     }
   }, [guessedWords]);
 
-  return <div data-test="component-guessed-words">{contentsJSX}</div>;
+  return (
+    <div data-test="component-guessed-words" className="mt-4">
+      {contentsJSX}
+    </div>
+  );
 }
 
 GuessedWords.propTypes = {
