@@ -1,5 +1,5 @@
 import moxios from 'moxios';
-import { getSecretWord } from '../../../actions/getSecretWord';
+import { getSecretWord } from '../../../actions';
 
 describe('getSecretWord', () => {
   beforeEach(() => {
