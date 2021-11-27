@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { findByTestAttr, checkProps } from '../../test-utils/testUtils';
-import Input from '../../components/Input';
+import { findByTestAttr, checkProps } from '../../../test-utils/testUtils';
+import Input from '../../../components/Input';
 
 /* mock entire module for destructuring useState on import
 const mockSetCurrentGuess = jest.fn(); // setCurrentGuess mock
