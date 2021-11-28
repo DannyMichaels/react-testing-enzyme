@@ -48,5 +48,8 @@
     "enzyme": "^3.11.0",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
+  },
+  "jest": {
+    "resetMocks": false
   }
 }

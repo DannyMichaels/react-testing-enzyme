@@ -4,9 +4,11 @@ import Congrats from './components/Congrats';
 import GuessedWords from './components/GuessedWords';
 import Input from './components/Input';
 import { getSecretWord } from './actions';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 function App() {
+  const dispatch = useDispatch();
+
   const { success, secretWord, guessedWords } = useSelector(
     ({ success, secretWord, guessedWords }) => ({
       success,
@@ -16,7 +18,9 @@ function App() {
   );
 
   useEffect(() => {
-    getSecretWord();
+    dispatch(getSecretWord());
+
+    //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
