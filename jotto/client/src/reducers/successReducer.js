@@ -1,6 +1,6 @@
 import { ACTION_TYPES as TYPES } from './../actions/index';
 
-const { CORRECT_GUESS } = TYPES;
+const { CORRECT_GUESS, SET_SUCCESS } = TYPES;
 
 /**
  * @method successReducer
@@ -9,11 +9,15 @@ const { CORRECT_GUESS } = TYPES;
  * @returns {boolean} - new success state
  */
 export default function successReducer(state = false, action) {
-  const { type } = action;
+  const { type, payload } = action;
 
   switch (type) {
     case CORRECT_GUESS: {
       return true;
+    }
+
+    case SET_SUCCESS: {
+      return payload;
     }
 
     default:

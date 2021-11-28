@@ -8,12 +8,12 @@ import PropTypes from 'prop-types';
 export default function Congrats({ success }) {
   if (success) {
     return (
-      <div
-        data-test="component-congrats"
-        className="bg-green-100 border-2 border-green-600 rounded text-green-900 px-4 py-2">
-        <span data-test="congrats-message">
+      <div data-test="component-congrats">
+        <div
+          data-test="congrats-message"
+          className="bg-green-100 border-2 border-green-600 rounded text-green-900 px-4 py-2">
           Congratulations! You guessed the word!
-        </span>
+        </div>
       </div>
     );
   }

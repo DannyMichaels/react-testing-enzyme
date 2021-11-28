@@ -13,6 +13,9 @@ export default function guessedWordsReducer(state = [], action) {
     case TYPES.GUESS_WORD:
       return [...state, payload];
 
+    case TYPES.RESET_GUESSES:
+      return [];
+
     default:
       return state;
   }

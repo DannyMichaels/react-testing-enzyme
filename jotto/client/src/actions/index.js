@@ -5,6 +5,11 @@ export const ACTION_TYPES = {
   CORRECT_GUESS: 'CORRECT_GUESS',
   GUESS_WORD: 'GUESS_WORD',
   SET_SECRET_WORD: 'SET_SECRET_WORD',
+  RESET_GUESSES: 'RESET_GUESSES',
+  SET_SUCCESS: 'SET_SUCCESS',
+  GIVE_UP: 'GIVE_UP',
+  RESET_GIVE_UP: 'RESET_GIVE_UP',
+  SET_NEW_WORD_BUTTON_SHOWING: 'SET_NEW_WORD_BUTTON_SHOWING',
 };
 
 /**
@@ -61,4 +66,33 @@ export const getSecretWord = () => {
   //     });
   //   });
   // };
+};
+
+export const resetApp = () => {
+  return async function (dispatch) {
+    const response = await axios.get('http://localhost:3030');
+
+    dispatch({
+      type: ACTION_TYPES.SET_SECRET_WORD,
+      payload: response.data,
+    });
+
+    dispatch({ type: ACTION_TYPES.RESET_GIVE_UP });
+
+    dispatch({ type: ACTION_TYPES.RESET_GUESSES });
+
+    dispatch({ type: ACTION_TYPES.SET_SUCCESS, payload: false });
+
+    dispatch({
+      type: ACTION_TYPES.SET_NEW_WORD_BUTTON_SHOWING,
+      payload: false,
+    });
+  };
+};
+
+export const giveUp = () => {
+  return function (dispatch) {
+    dispatch({ type: ACTION_TYPES.GIVE_UP });
+    dispatch({ type: ACTION_TYPES.SET_NEW_WORD_BUTTON_SHOWING, payload: true });
+  };
 };

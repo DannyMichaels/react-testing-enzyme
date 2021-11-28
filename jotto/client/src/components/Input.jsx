@@ -1,11 +1,11 @@
 import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { guessWord } from '../actions';
+import { giveUp, guessWord } from '../actions';
 
 export default function Input({ secretWord }) {
   const [currentGuess, setCurrentGuess] = useState('');
-  const { success } = useSelector((state) => state);
+  const { success, gaveUp } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const handleSubmit = useCallback(
@@ -19,7 +19,11 @@ export default function Input({ secretWord }) {
     [currentGuess, dispatch]
   );
 
-  if (success) {
+  const handleGiveUp = useCallback(() => {
+    dispatch(giveUp());
+  }, [dispatch]);
+
+  if (success || gaveUp) {
     return <div data-test="component-input" />;
   }
 
@@ -34,6 +38,7 @@ export default function Input({ secretWord }) {
               Guess
             </label>
             <input
+              onKeyDown={(e) => e.key === 'Enter' && handleSubmit(e)}
               data-test="input-field"
               className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
               name="currentGuess"
@@ -45,15 +50,24 @@ export default function Input({ secretWord }) {
           </div>
         </div>
 
-        <div className="md:flex md:items-center">
-          <div className="md:w-1/3"></div>
-          <div className="md:w-2/3">
+        <div className="xs:flex md:items-center">
+          <div className="md:w-1/4 mr-2">
             <button
               data-test="submit-button"
               onClick={handleSubmit}
               className="shadow bg-blue-500 hover:bg-blue-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
               type="button">
-              Submit
+              Guess
+            </button>
+          </div>
+
+          <div className="md:w-1/3">
+            <button
+              data-test="give-up-button"
+              onClick={handleGiveUp}
+              className="shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+              type="button">
+              Give Up
             </button>
           </div>
         </div>

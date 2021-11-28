@@ -10,6 +10,11 @@ module.exports = {
       xs: '0px',
       ...defaultTheme.screens,
     },
+
+    scale: {
+      ...defaultTheme.scale,
+      101: '1.01',
+    },
   },
   variants: {
     container: {

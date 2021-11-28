@@ -1,21 +1,27 @@
 import { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 const TABLE_CELL_CLASS =
   'px-8 py-4 text-base text-bold text-gray-500 text-left border border-grey-500';
 
 export default function GuessedWords({ guessedWords }) {
+  const { gaveUp } = useSelector((state) => state);
+
   const contentsJSX = useMemo(() => {
     if (!guessedWords.length) {
       return (
-        <span data-test="guess-instructions">
-          Try to guess the secret word!
-        </span>
+        !gaveUp && (
+          <span data-test="guess-instructions">
+            Try to guess the secret word!
+          </span>
+        )
       );
     } else {
       const guessedWordsRows = guessedWords.map(
         ({ guessedWord, letterMatchCount }, idx) => (
           <tr data-test="guessed-word" key={idx}>
+            <td className={TABLE_CELL_CLASS + ' w-1/6'}>{idx}</td>
             <td className={TABLE_CELL_CLASS}>{guessedWord}</td>
             <td className={TABLE_CELL_CLASS}>{letterMatchCount}</td>
           </tr>
@@ -28,6 +34,9 @@ export default function GuessedWords({ guessedWords }) {
           <table className="table-fixed border-b border-t border-gray-200 shadow w-full">
             <thead className="bg-gray-50">
               <tr className="whitespace-nowrap">
+                <th scope="col" className={TABLE_CELL_CLASS + ' w-1/6'}>
+                  #
+                </th>
                 <th scope="col" className={TABLE_CELL_CLASS}>
                   Guess
                 </th>
@@ -42,7 +51,7 @@ export default function GuessedWords({ guessedWords }) {
         </div>
       );
     }
-  }, [guessedWords]);
+  }, [guessedWords, gaveUp]);
 
   return (
     <div data-test="component-guessed-words" className="mt-4">
