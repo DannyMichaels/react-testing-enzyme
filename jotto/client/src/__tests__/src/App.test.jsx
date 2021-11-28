@@ -2,12 +2,10 @@ import { mount } from 'enzyme';
 import App from '../../App';
 import { findByTestAttr, storeFactory } from '../../test-utils';
 import { Provider } from 'react-redux';
+import { getSecretWord as mockGetSecretWord } from '../../actions';
 
 // activate global mock to make sure getSecretWord doesn't make network call
 jest.mock('../../actions');
-
-// eslint-disable-next-line
-import { getSecretWord as mockGetSecretWord } from '../../actions';
 
 /**
  * @method setup
