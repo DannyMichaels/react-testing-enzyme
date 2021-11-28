@@ -1,6 +1,9 @@
 import App from '../../../App';
 import { mount } from 'enzyme';
-import { findByTestAttr } from '../../../test-utils';
+import { findByTestAttr, storeFactory } from '../../../test-utils';
+import { Provider } from 'react-redux';
+
+jest.mock('../../../actions');
 
 /**
  *
@@ -12,10 +15,15 @@ import { findByTestAttr } from '../../../test-utils';
  * @param {object} state
  * @returns {Wrapper} - Enzyme wrapper of mounted App component
  */
-const setup = (state = {}) => {
-  // TODO: apply state
+const setup = (initialState = {}) => {
+  const store = storeFactory(initialState);
 
-  const wrapper = mount(<App />);
+  const wrapper = mount(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+
   // add value to input box
   const inputField = findByTestAttr(wrapper, 'input-field');
   inputField.simulate('change', { target: { value: 'train' } });
@@ -28,7 +36,7 @@ const setup = (state = {}) => {
 };
 
 // right thing happens if no words have been guessed.
-describe.skip('no words guessed', () => {
+describe('no words guessed', () => {
   let wrapper;
   beforeEach(() => {
     wrapper = setup({
@@ -44,7 +52,7 @@ describe.skip('no words guessed', () => {
   });
 });
 
-describe.skip('some words guessed', () => {
+describe('some words guessed', () => {
   let wrapper;
   beforeEach(() => {
     wrapper = setup({
@@ -56,11 +64,11 @@ describe.skip('some words guessed', () => {
 
   it('creates GuessedWords table with multiple rows', () => {
     const guessedWordRows = findByTestAttr(wrapper, 'guessed-word');
-    expect(guessedWordRows).toHaveLength(3); // 3 because  additional 1 is being entered by setup function
+    expect(guessedWordRows).toHaveLength(2); // 2 because  additional 1 is being entered by setup function
   });
 });
 
-describe.skip('guess secret word', () => {
+describe('guess secret word', () => {
   let wrapper;
 
   beforeEach(() => {

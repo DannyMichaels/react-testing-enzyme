@@ -1,17 +1,23 @@
 import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { guessWord } from '../actions';
 
 export default function Input({ secretWord }) {
   const [currentGuess, setCurrentGuess] = useState('');
   const { success } = useSelector((state) => state);
+  const dispatch = useDispatch();
 
-  const handleSubmit = useCallback((e) => {
-    e.preventDefault();
-    // TODO: update guessedWords global state, check against secretWord and optionally update success global state
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      // TODO: update guessedWords global state, check against secretWord and optionally update success global state
+      dispatch(guessWord(currentGuess));
 
-    setCurrentGuess(''); // clear current guess
-  }, []);
+      setCurrentGuess(''); // clear current guess
+    },
+    [currentGuess, dispatch]
+  );
 
   if (success) {
     return <div data-test="component-input" />;
