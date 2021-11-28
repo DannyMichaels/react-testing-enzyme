@@ -75,12 +75,7 @@ export const getSecretWord = () => {
 
 export const resetApp = () => {
   return async function (dispatch) {
-    const response = await axios.get('http://localhost:3030');
-
-    dispatch({
-      type: ACTION_TYPES.SET_SECRET_WORD,
-      payload: response.data,
-    });
+    dispatch(getSecretWord());
 
     dispatch({ type: ACTION_TYPES.RESET_GIVE_UP });
 
