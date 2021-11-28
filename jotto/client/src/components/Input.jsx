@@ -1,8 +1,10 @@
 import { useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-export default function Input({ success, secretWord }) {
+export default function Input({ secretWord }) {
   const [currentGuess, setCurrentGuess] = useState('');
+  const { success } = useSelector((state) => state);
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
@@ -56,5 +58,4 @@ export default function Input({ success, secretWord }) {
 
 Input.propTypes = {
   secretWord: PropTypes.string.isRequired,
-  success: PropTypes.bool.isRequired,
 };

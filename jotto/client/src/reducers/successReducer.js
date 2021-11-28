@@ -4,7 +4,7 @@ const { CORRECT_GUESS } = TYPES;
 
 /**
  * @method successReducer
- * @param {array} state - Array of guessed words
+ * @param {boolean} state - state of success true or false
  * @param {object} action - action to be reduced
  * @returns {boolean} - new success state
  */

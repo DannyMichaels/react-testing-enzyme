@@ -1,6 +1,7 @@
 import { mount } from 'enzyme';
 import App from '../../App';
-import { findByTestAttr } from '../../test-utils';
+import { findByTestAttr, storeFactory } from '../../test-utils';
+import { Provider } from 'react-redux';
 
 // activate global mock to make sure getSecretWord doesn't make network call
 jest.mock('../../actions');
@@ -13,7 +14,15 @@ import { getSecretWord as mockGetSecretWord } from '../../actions';
  * @desc Setup function for App component
  * @returns {ShallowWrapper}
  */
-const setup = () => mount(<App />); // useEffect only happens with mount and not shallow with enzyme
+const setup = (initialState = {}) => {
+  const store = storeFactory(initialState);
+
+  return mount(
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}; // useEffect only happens with mount and not shallow with enzyme
 
 describe('<App />', () => {
   it('renders without error', () => {
@@ -29,7 +38,7 @@ describe('<App />', () => {
     });
 
     test('getSecretWord runs on app mount', () => {
-      const wrapper = setup();
+      setup();
       expect(mockGetSecretWord).toHaveBeenCalledTimes(1);
     });
 

@@ -1,7 +1,8 @@
 import React from 'react';
-import { shallow } from 'enzyme';
-import { findByTestAttr, checkProps } from '../../../test-utils';
+import { mount } from 'enzyme';
+import { findByTestAttr, checkProps, storeFactory } from '../../../test-utils';
 import Input from '../../../components/Input';
+import { Provider } from 'react-redux';
 
 /* mock entire module for destructuring useState on import
 const mockSetCurrentGuess = jest.fn(); // setCurrentGuess mock
@@ -13,12 +14,18 @@ jest.mock('react', () => ({
 
 /**
  * @method setup
- * @desc Factory function to create a ShallowWrapper for the Input component
+ * @desc Factory function to create a Wrapper for the Input component
  * @param {object} props - component props specific for this setup
- * @returns {ShallowWrapper}
+ * @returns {Wrapper}
  */
-const setup = (success = false, secretWord = 'party') => {
-  return shallow(<Input success={success} secretWord={secretWord} />);
+const setup = (initialState = {}, secretWord = 'party') => {
+  const store = storeFactory(initialState);
+
+  return mount(
+    <Provider store={store}>
+      <Input secretWord={secretWord} />
+    </Provider>
+  );
 };
 
 describe('<Input />', () => {
@@ -26,7 +33,7 @@ describe('<Input />', () => {
     describe('success is true', () => {
       let wrapper;
       beforeEach(() => {
-        wrapper = setup(true);
+        wrapper = setup({ success: true });
       });
 
       it('renders without error', () => {
@@ -49,7 +56,7 @@ describe('<Input />', () => {
     describe('success is false', () => {
       let wrapper;
       beforeEach(() => {
-        wrapper = setup(false);
+        wrapper = setup({ success: false });
       });
 
       it('renders without error', () => {
@@ -71,7 +78,7 @@ describe('<Input />', () => {
   });
 
   it('does not throw warning with expected prop types', () => {
-    checkProps(Input, { secretWord: 'Hello', success: false });
+    checkProps(Input, { secretWord: 'Hello' });
   });
 
   describe('state controlled input field', () => {
@@ -89,7 +96,7 @@ describe('<Input />', () => {
       // it won't run the actual useState that comes from react, it will be replaced with this function and it returns an array of empty string and  the mock setter
       React.useState = () => ['train', mockSetCurrentGuess];
 
-      wrapper = setup();
+      wrapper = setup({ success: false });
     });
 
     afterEach(() => {
