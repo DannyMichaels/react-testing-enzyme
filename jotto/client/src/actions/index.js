@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getLetterMatchCount } from '../utils';
 
 export const ACTION_TYPES = {
   CORRECT_GUESS: 'CORRECT_GUESS',
@@ -20,7 +21,19 @@ export const ACTION_TYPES = {
  * @returns {function} - Redux Thunk function.
  */
 export const guessWord = (guessedWord) => {
-  return function (dispatch, getState) {};
+  return function (dispatch, getState) {
+    const secretWord = getState().secretWord;
+    const letterMatchCount = getLetterMatchCount(guessedWord, secretWord);
+
+    dispatch({
+      type: ACTION_TYPES.GUESS_WORD,
+      payload: { guessedWord, letterMatchCount },
+    });
+
+    if (guessedWord.toLowerCase() === secretWord.toLowerCase()) {
+      dispatch({ type: ACTION_TYPES.CORRECT_GUESS });
+    }
+  };
 };
 
 export const getSecretWord = async () => {
