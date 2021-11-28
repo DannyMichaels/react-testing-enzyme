@@ -4,6 +4,7 @@ import { getLetterMatchCount } from '../utils';
 export const ACTION_TYPES = {
   CORRECT_GUESS: 'CORRECT_GUESS',
   GUESS_WORD: 'GUESS_WORD',
+  SET_SECRET_WORD: 'SET_SECRET_WORD',
 };
 
 /**
@@ -21,10 +22,11 @@ export const ACTION_TYPES = {
  * @returns {function} - Redux Thunk function.
  */
 export const guessWord = (guessedWord) => {
+  // this is a redux thunk
   return function (dispatch, getState) {
     const secretWord = getState().secretWord;
     const letterMatchCount = getLetterMatchCount(guessedWord, secretWord);
-    console.log({ letterMatchCount });
+
     dispatch({
       type: ACTION_TYPES.GUESS_WORD,
       payload: { guessedWord, letterMatchCount },
@@ -36,9 +38,27 @@ export const guessWord = (guessedWord) => {
   };
 };
 
-export const getSecretWord = async () => {
-  // TODO: write actual action in redux
-  const { data } = await axios.get('http://localhost:3030');
+/**
+ * Returns Redux Thunk function that initiates an axios request
+ *    and dispatches the response as a 'SET_SECRET_WORD' action
+ * @returns {function} - Redux Thunk function.
+ */
+export const getSecretWord = () => {
+  return async function (dispatch) {
+    const response = await axios.get('http://localhost:3030');
 
-  return data;
+    dispatch({
+      type: ACTION_TYPES.SET_SECRET_WORD,
+      payload: response.data,
+    });
+  };
+
+  // return function (dispatch) {
+  //   return axios.get('http://localhost:3030').then((response) => {
+  //     dispatch({
+  //       type: ACTION_TYPES.SET_SECRET_WORD,
+  //       payload: response.data,
+  //     });
+  //   });
+  // };
 };
