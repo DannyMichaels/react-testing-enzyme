@@ -1,10 +1,13 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { resetApp } from './../actions/index';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function NewWordButton() {
-  const isNewWordShowing = useSelector(
-    ({ isNewWordShowing }) => isNewWordShowing
+  const { success, gaveUp } = useSelector((state) => state);
+
+  const isNewWordButtonShowing = useMemo(
+    () => success || gaveUp,
+    [success, gaveUp]
   );
 
   const dispatch = useDispatch();
@@ -13,7 +16,7 @@ export default function NewWordButton() {
     dispatch(resetApp());
   }, [dispatch]);
 
-  if (!isNewWordShowing) {
+  if (!isNewWordButtonShowing) {
     return <div data-test="component-new-word-button" />;
   }
 

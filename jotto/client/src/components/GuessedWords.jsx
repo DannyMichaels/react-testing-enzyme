@@ -1,13 +1,10 @@
 import { useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 const TABLE_CELL_CLASS =
   'px-8 py-4 text-base text-bold text-gray-500 text-left border border-grey-500';
 
-export default function GuessedWords({ guessedWords }) {
-  const { gaveUp } = useSelector((state) => state);
-
+export default function GuessedWords({ guessedWords, gaveUp }) {
   const contentsJSX = useMemo(() => {
     if (!guessedWords.length) {
       return (
@@ -67,4 +64,6 @@ GuessedWords.propTypes = {
       letterMatchCount: PropTypes.number.isRequired,
     })
   ).isRequired,
+
+  gaveUp: PropTypes.bool.isRequired,
 };

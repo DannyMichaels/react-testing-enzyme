@@ -60,4 +60,23 @@ describe('getSecretWord', () => {
 
     return;
   });
+
+  test('error caught on http request and sets error to true on state', async () => {
+    const store = storeFactory();
+
+    moxios.wait(() => {
+      const request = moxios.requests.mostRecent();
+      request.respondWith({
+        status: 404,
+        response: '',
+      });
+    });
+
+    await store.dispatch(getSecretWord());
+
+    const { error } = store.getState();
+    expect(error).toBe(true);
+
+    return;
+  });
 });

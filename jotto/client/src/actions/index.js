@@ -9,7 +9,6 @@ export const ACTION_TYPES = {
   SET_SUCCESS: 'SET_SUCCESS',
   GIVE_UP: 'GIVE_UP',
   RESET_GIVE_UP: 'RESET_GIVE_UP',
-  SET_NEW_WORD_BUTTON_SHOWING: 'SET_NEW_WORD_BUTTON_SHOWING',
   SET_ERROR: 'SET_ERROR',
 };
 
@@ -82,17 +81,11 @@ export const resetApp = () => {
     dispatch({ type: ACTION_TYPES.RESET_GUESSES });
 
     dispatch({ type: ACTION_TYPES.SET_SUCCESS, payload: false });
-
-    dispatch({
-      type: ACTION_TYPES.SET_NEW_WORD_BUTTON_SHOWING,
-      payload: false,
-    });
   };
 };
 
 export const giveUp = () => {
   return function (dispatch) {
     dispatch({ type: ACTION_TYPES.GIVE_UP });
-    dispatch({ type: ACTION_TYPES.SET_NEW_WORD_BUTTON_SHOWING, payload: true });
   };
 };

@@ -36,11 +36,11 @@ function App() {
           <RevealWord gaveUp={gaveUp} secretWord={secretWord} />
           <NewWordButton />
           <Input secretWord={secretWord} />
-          <GuessedWords guessedWords={guessedWords} />
+          <GuessedWords guessedWords={guessedWords} gaveUp={gaveUp} />
           <TotalGuesses totalGuesses={guessedWords.length} />
         </>
       ) : (
-        <Error />
+        <Error error={error} />
       )}
     </div>
   );

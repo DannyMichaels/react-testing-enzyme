@@ -15,7 +15,7 @@ jest.mock('../../../actions');
  * @param {object} state
  * @returns {Wrapper} - Enzyme wrapper of mounted App component
  */
-const setup = (initialState = {}) => {
+const setup = (initialState = {}, withInputAndSubmit = true) => {
   const store = storeFactory(initialState);
 
   const wrapper = mount(
@@ -24,31 +24,76 @@ const setup = (initialState = {}) => {
     </Provider>
   );
 
-  // add value to input box
-  const inputField = findByTestAttr(wrapper, 'input-field');
-  inputField.simulate('change', { target: { value: 'train' } });
+  if (withInputAndSubmit) {
+    // add value to input box
+    const inputField = findByTestAttr(wrapper, 'input-field');
+    inputField.simulate('change', { target: { value: 'train' } });
 
-  // simulate click on submit button
-  const submitBtn = findByTestAttr(wrapper, 'submit-button');
-  submitBtn.simulate('click', { preventDefault: () => {} });
+    // simulate click on submit button
+    const submitBtn = findByTestAttr(wrapper, 'submit-button');
+    submitBtn.simulate('click', { preventDefault: () => {} });
+  }
 
   return wrapper;
 };
 
 // right thing happens if no words have been guessed.
 describe('no words guessed', () => {
-  let wrapper;
-  beforeEach(() => {
-    wrapper = setup({
-      secretWord: 'party',
-      success: false,
-      guessedWords: [],
+  describe('when submitting the first guess', () => {
+    let wrapper;
+
+    beforeEach(() => {
+      wrapper = setup({
+        secretWord: 'party',
+        success: false,
+        guessedWords: [],
+      });
+    });
+
+    it('creates GuessedWords table with one row after', () => {
+      const guessedWordRows = findByTestAttr(wrapper, 'guessed-word');
+      expect(guessedWordRows).toHaveLength(1);
+    });
+
+    it('displays give up button on wrong guess', () => {
+      const giveUpBtn = findByTestAttr(wrapper, 'give-up-button');
+      expect(giveUpBtn.exists()).toBe(true);
+    });
+
+    test('new word button does not show', () => {
+      const newWordBtn = findByTestAttr(wrapper, 'new-word-button');
+      expect(newWordBtn.exists()).toBe(false);
     });
   });
 
-  it('creates GuessedWords table with one row', () => {
-    const guessedWordRows = findByTestAttr(wrapper, 'guessed-word');
-    expect(guessedWordRows).toHaveLength(1);
+  describe('when not submitting the first guess', () => {
+    let wrapper;
+
+    beforeEach(() => {
+      wrapper = setup(
+        {
+          secretWord: 'party',
+          success: false,
+          guessedWords: [],
+        },
+        false
+      );
+    });
+
+    it('does not display GuessedWords table', () => {
+      const guessedWordRows = findByTestAttr(wrapper, 'guessed-word');
+      expect(guessedWordRows).toHaveLength(0);
+    });
+
+    it('does not display give up button', () => {
+      const giveUpBtn = findByTestAttr(wrapper, 'give-up-button');
+      expect(giveUpBtn.exists()).toBe(false);
+    });
+
+    test('new word button does not show', () => {
+      const newWordBtn = findByTestAttr(wrapper, 'new-word-button');
+      expect(newWordBtn.exists()).toBe(false);
+    });
   });
 });
 
@@ -66,9 +111,19 @@ describe('some words guessed', () => {
     const guessedWordRows = findByTestAttr(wrapper, 'guessed-word');
     expect(guessedWordRows).toHaveLength(2); // 2 because  additional 1 is being entered by setup function
   });
+
+  test('new word button does not show', () => {
+    const newWordBtn = findByTestAttr(wrapper, 'new-word-button');
+    expect(newWordBtn.exists()).toBe(false);
+  });
+
+  it('displays give up button', () => {
+    const giveUpBtn = findByTestAttr(wrapper, 'give-up-button');
+    expect(giveUpBtn.exists()).toBe(true);
+  });
 });
 
-describe('guess secret word', () => {
+describe('guess secret word (correct guess)', () => {
   let wrapper;
 
   beforeEach(() => {
@@ -96,6 +151,11 @@ describe('guess secret word', () => {
   it('displays congrats component', () => {
     const congrats = findByTestAttr(wrapper, 'component-congrats');
     expect(congrats.text().length).toBeGreaterThan(0);
+  });
+
+  it('displays new word button', () => {
+    const newWordBtn = findByTestAttr(wrapper, 'new-word-button');
+    expect(newWordBtn.text().length).toBeGreaterThan(0);
   });
 
   it('does not display input component contents', () => {

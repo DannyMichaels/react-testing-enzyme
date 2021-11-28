@@ -9,6 +9,7 @@ const defaultProps = {
       letterMatchCount: 3,
     },
   ],
+  gaveUp: false,
 };
 
 /**
