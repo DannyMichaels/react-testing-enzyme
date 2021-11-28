@@ -1,11 +1,11 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { giveUp, guessWord } from '../actions';
 
 export default function Input({ secretWord }) {
   const [currentGuess, setCurrentGuess] = useState('');
-  const { success, gaveUp } = useSelector((state) => state);
+  const { success, gaveUp, guessedWords } = useSelector((state) => state);
   const dispatch = useDispatch();
 
   const handleSubmit = useCallback(
@@ -22,6 +22,10 @@ export default function Input({ secretWord }) {
   const handleGiveUp = useCallback(() => {
     dispatch(giveUp());
   }, [dispatch]);
+
+  const showGiveUpBtn = useMemo(() => {
+    return !success && guessedWords.length > 0;
+  }, [success, guessedWords]);
 
   if (success || gaveUp) {
     return <div data-test="component-input" />;
@@ -62,13 +66,15 @@ export default function Input({ secretWord }) {
           </div>
 
           <div className="md:w-1/3">
-            <button
-              data-test="give-up-button"
-              onClick={handleGiveUp}
-              className="shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-              type="button">
-              Give Up
-            </button>
+            {showGiveUpBtn && (
+              <button
+                data-test="give-up-button"
+                onClick={handleGiveUp}
+                className="shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                type="button">
+                Give Up
+              </button>
+            )}
           </div>
         </div>
       </form>

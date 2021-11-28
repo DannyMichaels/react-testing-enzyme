@@ -10,6 +10,7 @@ export const ACTION_TYPES = {
   GIVE_UP: 'GIVE_UP',
   RESET_GIVE_UP: 'RESET_GIVE_UP',
   SET_NEW_WORD_BUTTON_SHOWING: 'SET_NEW_WORD_BUTTON_SHOWING',
+  SET_ERROR: 'SET_ERROR',
 };
 
 /**
@@ -50,12 +51,16 @@ export const guessWord = (guessedWord) => {
  */
 export const getSecretWord = () => {
   return async function (dispatch) {
-    const response = await axios.get('http://localhost:3030');
+    try {
+      const response = await axios.get('http://localhost:3030');
 
-    dispatch({
-      type: ACTION_TYPES.SET_SECRET_WORD,
-      payload: response.data,
-    });
+      dispatch({
+        type: ACTION_TYPES.SET_SECRET_WORD,
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({ type: ACTION_TYPES.SET_ERROR, payload: true });
+    }
   };
 
   // return function (dispatch) {
