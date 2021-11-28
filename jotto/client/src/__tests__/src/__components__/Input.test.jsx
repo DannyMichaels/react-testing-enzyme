@@ -125,4 +125,52 @@ describe('<Input />', () => {
       expect(mockSetCurrentGuess).toHaveBeenCalledWith(''); // expect the setState to have been ran after the click and set to empty string
     });
   });
+
+  describe('give up button', () => {
+    describe('when success is false', () => {
+      it('does not show when no words have been guessed', () => {
+        const wrapper = setup({ success: false });
+        const giveUpButton = findByTestAttr(wrapper, 'give-up-button');
+        expect(giveUpButton.exists()).toBe(false);
+      });
+
+      it('shows when ONE word has been guessed and success is false', () => {
+        const wrapper = setup({
+          success: false,
+          guessedWords: [{ guessedWord: 'test', letterMatchCount: 1 }],
+        });
+        const giveUpButton = findByTestAttr(wrapper, 'give-up-button');
+        expect(giveUpButton.exists()).toBe(true);
+      });
+
+      it('shows when MULTIPLE words have been guessed and success is false', () => {
+        const wrapper = setup({
+          success: false,
+          guessedWords: [
+            { guessedWord: 'test', letterMatchCount: 1 },
+            { guessedWord: 'train', letterMatchCount: 3 },
+          ],
+        });
+
+        const giveUpButton = findByTestAttr(wrapper, 'give-up-button');
+        expect(giveUpButton.exists()).toBe(true);
+      });
+    });
+
+    describe('when success is true', () => {
+      it('does not display', () => {
+        const wrapper = setup({
+          success: true,
+          guessedWords: [
+            { guessedWord: 'test', letterMatchCount: 1 },
+            { guessedWord: 'train', letterMatchCount: 3 },
+            { guessedWord: 'party', letterMatchCount: 5 },
+          ],
+        });
+
+        const giveUpButton = findByTestAttr(wrapper, 'give-up-button');
+        expect(giveUpButton.exists()).toBe(false);
+      });
+    });
+  });
 });
