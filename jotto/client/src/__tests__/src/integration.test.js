@@ -1,5 +1,6 @@
 import { storeFactory } from '../../test-utils';
 import { guessWord } from '../../actions';
+import { resetApp } from './../../actions/index';
 
 describe('guessWord action dispatcher', () => {
   const unsuccessfulGuess = 'train';
@@ -94,5 +95,37 @@ describe('guessWord action dispatcher', () => {
 
       expect(newState).toEqual(expectedState);
     });
+  });
+});
+
+describe('resetApp action dispatcher', () => {
+  it('updates state correctly when resetting app', () => {
+    const secretWord = 'party';
+
+    const initialState = {
+      success: true,
+      guessedWords: [
+        { guessedWord: 'agile', letterMatchCount: 1 },
+        { guessedWord: 'train', letterMatchCount: 3 },
+        { guessedWord: 'party', letterMatchCount: 5 },
+      ],
+      secretWord,
+    };
+
+    const store = storeFactory(initialState);
+    store.dispatch(resetApp());
+
+    const newState = store.getState();
+    const expectedState = {
+      secretWord,
+
+      error: false,
+      gaveUp: false,
+
+      success: false,
+      guessedWords: [],
+    };
+
+    expect(newState).toEqual(expectedState);
   });
 });

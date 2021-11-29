@@ -6,7 +6,7 @@ export default function RevealWord({ gaveUp, secretWord }) {
   return (
     <div data-test="component-reveal">
       <div
-        data-test="giveup-message"
+        data-test="give-up-message"
         className="bg-red-500 border-2 border-red-600 rounded px-4 py-2">
         the secret word was "{secretWord}", better luck next time!
       </div>
