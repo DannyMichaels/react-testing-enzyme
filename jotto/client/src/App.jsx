@@ -1,13 +1,13 @@
 import './App.css';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import Congrats from './components/Congrats';
 import GuessedWords from './components/GuessedWords';
 import Input from './components/Input';
-import { getSecretWord } from './actions';
+import { getSecretWord, resetApp } from './actions';
 import { useSelector, useDispatch } from 'react-redux';
 import TotalGuesses from './components/TotalGuesses';
 import NewWordButton from './components/NewWordButton';
-import RevealWord from './components/RevealWord';
+import SecretWordReveal from './components/SecretWordReveal';
 import Error from './components/Error';
 
 function App() {
@@ -23,6 +23,10 @@ function App() {
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleReset = useCallback(() => {
+    dispatch(resetApp());
+  }, [dispatch]);
+
   return (
     <div
       data-test="component-app"
@@ -33,8 +37,11 @@ function App() {
       {!error ? (
         <>
           <Congrats success={success} />
-          <RevealWord gaveUp={gaveUp} secretWord={secretWord} />
-          <NewWordButton />
+          <SecretWordReveal gaveUp={gaveUp} secretWord={secretWord} />
+          <NewWordButton
+            display={success || gaveUp}
+            resetAction={handleReset}
+          />
           <Input secretWord={secretWord} />
           <GuessedWords guessedWords={guessedWords} gaveUp={gaveUp} />
           <TotalGuesses totalGuesses={guessedWords.length} />
